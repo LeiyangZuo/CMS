@@ -11,9 +11,7 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-
             <?php
-
             if (isset($_POST['submit'])) {
                 $search = $_POST['search'];
             }
@@ -61,7 +59,6 @@
                 }
             }
             ?>
-
         </div>
 
         <!-- Blog Sidebar Widgets Column -->

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: mac
+ * User: Leiyang
  * Date: 13/3/18
  * Time: 23:57
  */
@@ -54,6 +54,15 @@ function deleteCategory()
             die("Delete failed" . mysqli_error($connection));
         }
         header("Location: categories.php");//refresh the page
+    }
+}
+
+//check query if it is successful
+function confirmQuery($result)
+{
+    global $connection;
+    if (!$result) {
+        die ("Query failed" . mysqli_error($connection));
     }
 }
 

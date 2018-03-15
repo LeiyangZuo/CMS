@@ -35,7 +35,7 @@
                         //update category
                         if (isset($_GET['edit'])) {
                             $cat_id_edit = $_GET['edit'];
-                            include "includes/update_categories.php";
+                            include "includes/edit_categories.php";
                         }
                         ?>
 
