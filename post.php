@@ -18,7 +18,7 @@
             $query = "SELECT * FROM posts WHERE post_id = $select_post_id";
             $select_post_by_id = mysqli_query($connection, $query);
             if (!$select_post_by_id) {
-                die ("Query failed" . mysqli_error($connection));
+                die ("Query failed! " . mysqli_error($connection));
             }
             while ($row = mysqli_fetch_assoc($select_post_by_id)) {
                 $post_title = $row['post_title'];
@@ -49,7 +49,7 @@
                             class="glyphicon glyphicon-chevron-right"></span></a>
 
                 <hr>
-                
+
             <?php } ?>
 
             <!-- Pager -->
@@ -74,65 +74,81 @@
 
     <!-- Blog Comments -->
 
+
+    <?php
+    if (isset($_POST['create_comment'])) {
+        $select_post_id = $_GET['post_id'];
+        $com_author = $_POST['com_author'];
+        $com_email = $_POST['com_email'];
+        $com_content = $_POST['com_content'];
+
+        $query = "INSERT INTO comments (com_post_id, com_date, com_author, com_email, com_content, com_status) ";
+        $query .= "VALUES ({$select_post_id}, now(), '{$com_author}', '{$com_email}', '{$com_content}', 'Unapproved')";
+        $create_comment_query = mysqli_query($connection, $query);
+        if (!$create_comment_query) {
+            die ("Query failed!" . mysqli_error($connection));
+        }
+
+        $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$select_post_id}";
+        $update_comment_count = mysqli_query($connection, $query);
+        if (!$update_comment_count) {
+            die ("Query failed!" . mysqli_error($connection));
+        }
+    }
+    ?>
+
+
     <!-- Comments Form -->
     <div class="well">
         <h4>Leave a Comment:</h4>
-        <form role="form">
+        <form action="#" method="post" role="form">
             <div class="form-group">
-                <textarea class="form-control" rows="3"></textarea>
+                <label for="author">Author</label>
+                <input type="text" class="form-control" name="com_author">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="com_email">
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea name="com_content" class="form-control" rows="3"></textarea>
+            </div>
+            <button name="create_comment" type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 
     <hr>
 
     <!-- Posted Comments -->
+    <?php
+    $query = "SELECT * FROM comments WHERE com_post_id = {$select_post_id} ";
+    $query .= "AND com_status = 'approved' ";
+    $query .= "ORDER BY com_id DESC";
+    $select_comments_by_post_id = mysqli_query($connection, $query);
+    if (!$select_comments_by_post_id) {
+        die ("Query failed!" . mysqli_error($connection));
+    }
+    while ($row = mysqli_fetch_assoc($select_comments_by_post_id)) {
+        $com_date = $row['com_date'];
+        $com_content = $row['com_content'];
+        $com_author = $row['com_author'];
+        ?>
 
-    <!-- Comment -->
-    <div class="media">
-        <a class="pull-left" href="#">
-            <img class="media-object" src="http://placehold.it/64x64" alt="">
-        </a>
-        <div class="media-body">
-            <h4 class="media-heading">Start Bootstrap
-                <small>August 25, 2014 at 9:30 PM</small>
-            </h4>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-            Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-            vulputate fringilla. Donec lacinia congue felis in faucibus.
-        </div>
-    </div>
-
-    <!-- Comment -->
-    <div class="media">
-        <a class="pull-left" href="#">
-            <img class="media-object" src="http://placehold.it/64x64" alt="">
-        </a>
-        <div class="media-body">
-            <h4 class="media-heading">Start Bootstrap
-                <small>August 25, 2014 at 9:30 PM</small>
-            </h4>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-            Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-            vulputate fringilla. Donec lacinia congue felis in faucibus.
-            <!-- Nested Comment -->
-            <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="http://placehold.it/64x64" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">Nested Start Bootstrap
-                        <small>August 25, 2014 at 9:30 PM</small>
-                    </h4>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin
-                    commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce
-                    condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
+        <!-- Comment -->
+        <div class="media">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="http://placehold.it/64x64" alt="">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading"><?php echo $com_author; ?>
+                    <small><?php echo $com_date; ?></small>
+                </h4>
+                <?php echo $com_content; ?>
             </div>
-            <!-- End Nested Comment -->
         </div>
-    </div>
+
+    <?php } ?>
 
     <!-- Footer -->
     <?php include "includes/footer.php"; ?>

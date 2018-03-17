@@ -57,13 +57,11 @@ if (isset($_POST['update'])) {
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="post_title">Post Title</label>
-        <input type="text" class="form-control" name="post_title" value="<?php global $post_title;
-        echo $post_title; ?>">
+        <input type="text" class="form-control" name="post_title" value="<?php echo $post_title; ?>">
     </div>
     <div class="form-group">
         <label for="post_author">Post Author</label>
-        <input type="text" class="form-control" name="post_author" value="<?php global $post_author;
-        echo $post_author; ?>">
+        <input type="text" class="form-control" name="post_author" value="<?php echo $post_author; ?>">
     </div>
     <div class="form-group">
         <label for="post_category">Post Category</label>
@@ -86,24 +84,21 @@ if (isset($_POST['update'])) {
     </div>
     <div class="form-group">
         <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status" value="<?php global $post_status;
-        echo $post_status; ?>">
+        <input type="text" class="form-control" name="post_status" value="<?php echo $post_status; ?>">
     </div>
     <div class="form-group">
         <label for="post_image">Post Image</label>
-        <img width="200" src="../images/<?php global $post_image;
-        echo $post_image; ?>">
+        <img width="200" src="../images/<?php echo $post_image; ?>">
         <input type="file" name="post_image">
     </div>
     <div class="form-group">
         <label for="post_tags">Post Tags</label>
-        <input type="text" class="form-control" name="post_tags" value="<?php global $post_tags;
-        echo $post_tags; ?>">
+        <input type="text" class="form-control" name="post_tags" value="<?php echo $post_tags; ?>">
     </div>
     <div class="form-group">
         <label for="post_content">Post Content</label>
-        <textarea id="" cols="30" rows="10" class="form-control" name="post_content"><?php global $post_content;
-            echo $post_content; ?></textarea>
+        <textarea id="" cols="30" rows="10" class="form-control"
+                  name="post_content"><?php echo $post_content; ?></textarea>
     </div>
     <div class="form-group">
         <input type="submit" name="update" class="btn btn-primary" value="Update">
